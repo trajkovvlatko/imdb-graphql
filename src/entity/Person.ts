@@ -1,4 +1,5 @@
 import {Field, ObjectType} from 'type-graphql';
+import Title from './Title';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,8 +7,6 @@ import {
   BaseEntity,
   ManyToMany,
 } from 'typeorm';
-
-import Title from './Title';
 
 @Entity()
 @ObjectType()
@@ -34,6 +33,7 @@ export default class Person extends BaseEntity {
   @Column({default: ''})
   primaryProfession: string;
 
+  @Field(() => [Title], {nullable: true})
   @ManyToMany(() => Title, (title: Title) => title.people)
   titles: Title[];
 }

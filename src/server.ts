@@ -3,9 +3,10 @@ import {ApolloServer} from 'apollo-server-express';
 import {buildSchema} from 'type-graphql';
 import cors from 'cors';
 import express from 'express';
-import PersonResolver from './resolver/Person';
 import dotenv from 'dotenv';
 import {createConnection} from 'typeorm';
+import PersonResolver from './resolver/Person';
+import TitleResolver from './resolver/Title';
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ export default async function (): Promise<void> {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [PersonResolver],
+      resolvers: [PersonResolver, TitleResolver],
       validate: false,
     }),
     context: ({req, res}) => ({req, res}),
