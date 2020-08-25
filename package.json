@@ -1,12 +1,12 @@
 {
   "name": "imdb-graphql",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "dist/runner.js",
   "license": "MIT",
   "scripts": {
-    "watch": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
+    "watch": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/runner.ts",
     "build": "./node_modules/typescript/bin/tsc -p .",
-    "start": "ts-node src/index.ts",
+    "start": "ts-node src/runner.ts",
     "lint": "eslint . --ext .ts",
     "import": "ts-node src/importer/runner.ts"
   },

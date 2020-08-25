@@ -1,6 +1,6 @@
 import {createReadStream} from 'fs';
-import * as path from 'path';
-import * as es from 'event-stream';
+import path from 'path';
+import es from 'event-stream';
 import {createConnection} from 'typeorm';
 import TitleRow from './rows/TitleRow';
 import PersonRow from './rows/PersonRow';
@@ -11,7 +11,7 @@ interface IPath {
 }
 
 export default class Importer {
-  paths = [
+  paths: IPath[] = [
     {
       type: 'title',
       path: '../../data/title.basics.tsv',

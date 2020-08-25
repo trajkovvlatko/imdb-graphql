@@ -1,3 +1,4 @@
+import {Field, ObjectType} from 'type-graphql';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -9,6 +10,7 @@ import {
 import Title from './Title';
 
 @Entity()
+@ObjectType()
 export default class Person extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,15 +18,19 @@ export default class Person extends BaseEntity {
   @Column()
   personId: string;
 
+  @Field()
   @Column()
   name: string;
 
+  @Field()
   @Column({nullable: true})
   birthYear: number;
 
+  @Field()
   @Column({nullable: true})
   deathYear: number;
 
+  @Field()
   @Column({default: ''})
   primaryProfession: string;
 
