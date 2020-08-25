@@ -4,9 +4,27 @@ import Title from '../entity/Title';
 @Resolver(Title)
 export default class TitleResolver {
   @Query(() => Title, {nullable: true})
-  async title(@Arg('id', () => Int) id: number): Promise<Title> {
+  title(@Arg('id', () => Int) id: number): Promise<Title> {
     return Title.findOne(id, {
       relations: ['people'],
+    });
+  }
+
+  @Query(() => [Title], {nullable: true})
+  titles(
+    @Arg('take', () => Int, {nullable: true}) take: number | null,
+    @Arg('skip', () => Int, {nullable: true}) skip: number | null,
+  ): Promise<Title[]> {
+    if (!take || take > 1000 || take < 1) take = 10;
+    if (!skip || skip < 0) skip = 0;
+
+    return Title.find({
+      relations: ['people'],
+      take,
+      skip,
+      order: {
+        id: 'ASC',
+      },
     });
   }
 }
