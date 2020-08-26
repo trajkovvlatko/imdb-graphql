@@ -1,0 +1,18 @@
+query People($skip: Int, $take: Int) {
+  people(skip: $skip, take: $take) {
+    name
+    birthYear
+    deathYear
+    primaryProfession
+    titles {
+      titleType
+      name
+      originalName
+      isAdult
+      startYear
+      endYear
+      runtimeMinutes
+      genres
+    }
+  }
+}

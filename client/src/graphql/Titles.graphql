@@ -1,0 +1,18 @@
+query Titles($skip: Int, $take: Int) {
+  titles(skip: $skip, take: $take) {
+    titleType
+    name
+    originalName
+    isAdult
+    startYear
+    endYear
+    runtimeMinutes
+    genres
+    people {
+      name
+      birthYear
+      deathYear
+      primaryProfession
+    }
+  }
+}
