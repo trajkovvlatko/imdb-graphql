@@ -1,34 +1,31 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {useApolloClient} from '@apollo/client';
-import {useTitleLazyQuery} from '../generated/graphql';
-import TitleRow from '../components/TitleRow';
+import {useTitleQuery} from '../generated/graphql';
+import TitleDetails from '../components/TitleDetails';
 
-function Title() {
-  const idRef = useRef<HTMLInputElement>(null);
+interface IProps {
+  id: number;
+}
 
-  const [loadTitle, {data, loading}] = useTitleLazyQuery({
+function Title(props: IProps) {
+  const {data, loading, error} = useTitleQuery({
     client: useApolloClient(),
+    variables: {
+      id: props.id,
+    },
   });
 
-  const onSearch = () => {
-    if (idRef && idRef.current && idRef.current.value !== '') {
-      loadTitle({
-        variables: {
-          id: parseInt(idRef.current.value),
-        },
-      });
-    }
-  };
+  if (error) {
+    return <div>Error.</div>;
+  }
 
   return (
     <>
       <h3>Movie</h3>
-      <input ref={idRef} type='text' />
-      <button onClick={onSearch}>Search</button>
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <div>{data?.title && <TitleRow title={data.title} />}</div>
+        <div>{data?.title && <TitleDetails title={data.title} />}</div>
       )}
     </>
   );

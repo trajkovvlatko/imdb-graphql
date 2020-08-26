@@ -1,34 +1,31 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {useApolloClient} from '@apollo/client';
-import {usePersonLazyQuery} from '../generated/graphql';
-import PersonRow from '../components/PersonRow';
+import {usePersonQuery} from '../generated/graphql';
+import PersonDetails from '../components/PersonDetails';
 
-function Person() {
-  const idRef = useRef<HTMLInputElement>(null);
+interface IProps {
+  id: number;
+}
 
-  const [loadPerson, {data, loading}] = usePersonLazyQuery({
+function Person(props: IProps) {
+  const {data, loading, error} = usePersonQuery({
     client: useApolloClient(),
+    variables: {
+      id: props.id,
+    },
   });
 
-  const onSearch = () => {
-    if (idRef && idRef.current && idRef.current.value !== '') {
-      loadPerson({
-        variables: {
-          id: parseInt(idRef.current.value),
-        },
-      });
-    }
-  };
+  if (error) {
+    return <div>Error.</div>;
+  }
 
   return (
     <>
       <h3>Person</h3>
-      <input ref={idRef} type='text' />
-      <button onClick={onSearch}>Search</button>
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <div>{data?.person && <PersonRow person={data.person} />}</div>
+        <div>{data?.person && <PersonDetails person={data.person} />}</div>
       )}
     </>
   );
