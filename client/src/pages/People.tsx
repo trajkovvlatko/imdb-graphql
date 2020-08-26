@@ -1,18 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {useApolloClient} from '@apollo/client';
 import {usePeopleQuery, Person} from '../generated/graphql';
-import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
 import PersonRow from '../components/PersonRow';
 
-const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
-  cache: new InMemoryCache(),
-});
-
 function People() {
+  const [skip, setSkip] = useState(0);
+
   const {data, error, loading} = usePeopleQuery({
-    client,
+    client: useApolloClient(),
     variables: {
-      skip: 0,
+      skip,
       take: 10,
     },
   });
@@ -21,19 +18,25 @@ function People() {
     return <div>Error!</div>;
   }
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <ApolloProvider client={client}>
+    <>
       <h3>People</h3>
-      <ul>
-        {data?.people?.map((p: Person) => (
-          <PersonRow person={p} key={`person-${p.id}`} />
-        ))}
-      </ul>
-    </ApolloProvider>
+      {loading ? (
+        <div>Loading</div>
+      ) : (
+        <div>
+          <ul>
+            {data?.people?.map((p: Person) => (
+              <PersonRow person={p} key={`person-${p.id}`} />
+            ))}
+          </ul>
+          {skip !== 0 && (
+            <button onClick={() => setSkip(skip - 10)}>Previous</button>
+          )}
+          <button onClick={() => setSkip(skip + 10)}>Next</button>
+        </div>
+      )}
+    </>
   );
 }
 
