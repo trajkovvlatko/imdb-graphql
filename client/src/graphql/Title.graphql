@@ -1,0 +1,20 @@
+query Title($id: Int!) {
+  title(id: $id) {
+    id
+    titleType
+    name
+    originalName
+    isAdult
+    startYear
+    endYear
+    runtimeMinutes
+    genres
+    people {
+      id
+      name
+      birthYear
+      deathYear
+      primaryProfession
+    }
+  }
+}
