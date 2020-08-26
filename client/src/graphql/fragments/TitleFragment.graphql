@@ -1,0 +1,11 @@
+fragment TitleFragment on Title {
+  id
+  titleType
+  name
+  originalName
+  isAdult
+  startYear
+  endYear
+  runtimeMinutes
+  genres
+}

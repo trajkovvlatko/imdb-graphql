@@ -1,20 +1,5 @@
 query People($skip: Int, $take: Int) {
   people(skip: $skip, take: $take) {
-    id
-    name
-    birthYear
-    deathYear
-    primaryProfession
-    titles {
-      id
-      titleType
-      name
-      originalName
-      isAdult
-      startYear
-      endYear
-      runtimeMinutes
-      genres
-    }
+    ...PersonFragment
   }
 }

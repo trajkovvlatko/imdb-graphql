@@ -1,0 +1,7 @@
+fragment PersonFragment on Person {
+  id
+  name
+  birthYear
+  deathYear
+  primaryProfession
+}

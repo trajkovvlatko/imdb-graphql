@@ -1,20 +1,8 @@
 query Person($id: Int!) {
   person(id: $id) {
-    id
-    name
-    birthYear
-    deathYear
-    primaryProfession
+    ...PersonFragment
     titles {
-      id
-      titleType
-      name
-      originalName
-      isAdult
-      startYear
-      endYear
-      runtimeMinutes
-      genres
+      ...TitleFragment
     }
   }
 }

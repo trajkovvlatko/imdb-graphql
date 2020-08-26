@@ -1,20 +1,5 @@
 query Titles($skip: Int, $take: Int) {
   titles(skip: $skip, take: $take) {
-    id
-    titleType
-    name
-    originalName
-    isAdult
-    startYear
-    endYear
-    runtimeMinutes
-    genres
-    people {
-      id
-      name
-      birthYear
-      deathYear
-      primaryProfession
-    }
+    ...TitleFragment
   }
 }

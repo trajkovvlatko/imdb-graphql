@@ -75,11 +75,7 @@ export type PeopleQuery = (
   { __typename?: 'Query' }
   & { people?: Maybe<Array<(
     { __typename?: 'Person' }
-    & Pick<Person, 'id' | 'name' | 'birthYear' | 'deathYear' | 'primaryProfession'>
-    & { titles?: Maybe<Array<(
-      { __typename?: 'Title' }
-      & Pick<Title, 'id' | 'titleType' | 'name' | 'originalName' | 'isAdult' | 'startYear' | 'endYear' | 'runtimeMinutes' | 'genres'>
-    )>> }
+    & PersonFragmentFragment
   )>> }
 );
 
@@ -92,11 +88,11 @@ export type PersonQuery = (
   { __typename?: 'Query' }
   & { person?: Maybe<(
     { __typename?: 'Person' }
-    & Pick<Person, 'id' | 'name' | 'birthYear' | 'deathYear' | 'primaryProfession'>
     & { titles?: Maybe<Array<(
       { __typename?: 'Title' }
-      & Pick<Title, 'id' | 'titleType' | 'name' | 'originalName' | 'isAdult' | 'startYear' | 'endYear' | 'runtimeMinutes' | 'genres'>
+      & TitleFragmentFragment
     )>> }
+    & PersonFragmentFragment
   )> }
 );
 
@@ -109,11 +105,11 @@ export type TitleQuery = (
   { __typename?: 'Query' }
   & { title?: Maybe<(
     { __typename?: 'Title' }
-    & Pick<Title, 'id' | 'titleType' | 'name' | 'originalName' | 'isAdult' | 'startYear' | 'endYear' | 'runtimeMinutes' | 'genres'>
     & { people?: Maybe<Array<(
       { __typename?: 'Person' }
-      & Pick<Person, 'id' | 'name' | 'birthYear' | 'deathYear' | 'primaryProfession'>
+      & PersonFragmentFragment
     )>> }
+    & TitleFragmentFragment
   )> }
 );
 
@@ -127,37 +123,49 @@ export type TitlesQuery = (
   { __typename?: 'Query' }
   & { titles?: Maybe<Array<(
     { __typename?: 'Title' }
-    & Pick<Title, 'id' | 'titleType' | 'name' | 'originalName' | 'isAdult' | 'startYear' | 'endYear' | 'runtimeMinutes' | 'genres'>
-    & { people?: Maybe<Array<(
-      { __typename?: 'Person' }
-      & Pick<Person, 'id' | 'name' | 'birthYear' | 'deathYear' | 'primaryProfession'>
-    )>> }
+    & TitleFragmentFragment
   )>> }
 );
 
+export type PersonFragmentFragment = (
+  { __typename?: 'Person' }
+  & Pick<Person, 'id' | 'name' | 'birthYear' | 'deathYear' | 'primaryProfession'>
+);
 
+export type TitleFragmentFragment = (
+  { __typename?: 'Title' }
+  & Pick<Title, 'id' | 'titleType' | 'name' | 'originalName' | 'isAdult' | 'startYear' | 'endYear' | 'runtimeMinutes' | 'genres'>
+);
+
+export const PersonFragmentFragmentDoc = gql`
+    fragment PersonFragment on Person {
+  id
+  name
+  birthYear
+  deathYear
+  primaryProfession
+}
+    `;
+export const TitleFragmentFragmentDoc = gql`
+    fragment TitleFragment on Title {
+  id
+  titleType
+  name
+  originalName
+  isAdult
+  startYear
+  endYear
+  runtimeMinutes
+  genres
+}
+    `;
 export const PeopleDocument = gql`
     query People($skip: Int, $take: Int) {
   people(skip: $skip, take: $take) {
-    id
-    name
-    birthYear
-    deathYear
-    primaryProfession
-    titles {
-      id
-      titleType
-      name
-      originalName
-      isAdult
-      startYear
-      endYear
-      runtimeMinutes
-      genres
-    }
+    ...PersonFragment
   }
 }
-    `;
+    ${PersonFragmentFragmentDoc}`;
 
 /**
  * __usePeopleQuery__
@@ -188,25 +196,14 @@ export type PeopleQueryResult = Apollo.QueryResult<PeopleQuery, PeopleQueryVaria
 export const PersonDocument = gql`
     query Person($id: Int!) {
   person(id: $id) {
-    id
-    name
-    birthYear
-    deathYear
-    primaryProfession
+    ...PersonFragment
     titles {
-      id
-      titleType
-      name
-      originalName
-      isAdult
-      startYear
-      endYear
-      runtimeMinutes
-      genres
+      ...TitleFragment
     }
   }
 }
-    `;
+    ${PersonFragmentFragmentDoc}
+${TitleFragmentFragmentDoc}`;
 
 /**
  * __usePersonQuery__
@@ -236,25 +233,14 @@ export type PersonQueryResult = Apollo.QueryResult<PersonQuery, PersonQueryVaria
 export const TitleDocument = gql`
     query Title($id: Int!) {
   title(id: $id) {
-    id
-    titleType
-    name
-    originalName
-    isAdult
-    startYear
-    endYear
-    runtimeMinutes
-    genres
+    ...TitleFragment
     people {
-      id
-      name
-      birthYear
-      deathYear
-      primaryProfession
+      ...PersonFragment
     }
   }
 }
-    `;
+    ${TitleFragmentFragmentDoc}
+${PersonFragmentFragmentDoc}`;
 
 /**
  * __useTitleQuery__
@@ -284,25 +270,10 @@ export type TitleQueryResult = Apollo.QueryResult<TitleQuery, TitleQueryVariable
 export const TitlesDocument = gql`
     query Titles($skip: Int, $take: Int) {
   titles(skip: $skip, take: $take) {
-    id
-    titleType
-    name
-    originalName
-    isAdult
-    startYear
-    endYear
-    runtimeMinutes
-    genres
-    people {
-      id
-      name
-      birthYear
-      deathYear
-      primaryProfession
-    }
+    ...TitleFragment
   }
 }
-    `;
+    ${TitleFragmentFragmentDoc}`;
 
 /**
  * __useTitlesQuery__
