@@ -1,5 +1,5 @@
 {
-  "name": "imdb-graphql",
+  "name": "imdb-graphql-api",
   "version": "1.0.0",
   "main": "dist/runner.js",
   "license": "MIT",
