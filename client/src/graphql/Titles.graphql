@@ -1,5 +1,6 @@
 query Titles($skip: Int, $take: Int) {
   titles(skip: $skip, take: $take) {
+    id
     titleType
     name
     originalName
@@ -9,6 +10,7 @@ query Titles($skip: Int, $take: Int) {
     runtimeMinutes
     genres
     people {
+      id
       name
       birthYear
       deathYear

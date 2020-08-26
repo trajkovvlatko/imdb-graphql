@@ -12,6 +12,7 @@ import {
 @ObjectType()
 export default class Person extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @Field()
   id: number;
 
   @Column()
@@ -21,11 +22,11 @@ export default class Person extends BaseEntity {
   @Column()
   name: string;
 
-  @Field()
+  @Field({nullable: true})
   @Column({nullable: true})
   birthYear: number;
 
-  @Field()
+  @Field({nullable: true})
   @Column({nullable: true})
   deathYear: number;
 

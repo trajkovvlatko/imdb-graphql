@@ -13,6 +13,7 @@ import Person from './Person';
 @ObjectType()
 export default class Title extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @Field()
   id: number;
 
   @Column()
@@ -35,15 +36,15 @@ export default class Title extends BaseEntity {
   isAdult: boolean;
 
   @Column({nullable: true})
-  @Field()
+  @Field({nullable: true})
   startYear: number;
 
   @Column({nullable: true})
-  @Field()
+  @Field({nullable: true})
   endYear: number;
 
   @Column({nullable: true})
-  @Field()
+  @Field({nullable: true})
   runtimeMinutes: number;
 
   @Column({default: ''})

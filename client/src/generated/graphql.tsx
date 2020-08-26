@@ -43,22 +43,24 @@ export type QueryTitlesArgs = {
 
 export type Person = {
   __typename?: 'Person';
+  id: Scalars['Float'];
   name: Scalars['String'];
-  birthYear: Scalars['Float'];
-  deathYear: Scalars['Float'];
+  birthYear?: Maybe<Scalars['Float']>;
+  deathYear?: Maybe<Scalars['Float']>;
   primaryProfession: Scalars['String'];
   titles?: Maybe<Array<Title>>;
 };
 
 export type Title = {
   __typename?: 'Title';
+  id: Scalars['Float'];
   titleType: Scalars['String'];
   name: Scalars['String'];
   originalName: Scalars['String'];
   isAdult: Scalars['Boolean'];
-  startYear: Scalars['Float'];
-  endYear: Scalars['Float'];
-  runtimeMinutes: Scalars['Float'];
+  startYear?: Maybe<Scalars['Float']>;
+  endYear?: Maybe<Scalars['Float']>;
+  runtimeMinutes?: Maybe<Scalars['Float']>;
   genres: Scalars['String'];
   people?: Maybe<Array<Person>>;
 };
@@ -73,10 +75,10 @@ export type PeopleQuery = (
   { __typename?: 'Query' }
   & { people?: Maybe<Array<(
     { __typename?: 'Person' }
-    & Pick<Person, 'name' | 'birthYear' | 'deathYear' | 'primaryProfession'>
+    & Pick<Person, 'id' | 'name' | 'birthYear' | 'deathYear' | 'primaryProfession'>
     & { titles?: Maybe<Array<(
       { __typename?: 'Title' }
-      & Pick<Title, 'titleType' | 'name' | 'originalName' | 'isAdult' | 'startYear' | 'endYear' | 'runtimeMinutes' | 'genres'>
+      & Pick<Title, 'id' | 'titleType' | 'name' | 'originalName' | 'isAdult' | 'startYear' | 'endYear' | 'runtimeMinutes' | 'genres'>
     )>> }
   )>> }
 );
@@ -91,10 +93,10 @@ export type TitlesQuery = (
   { __typename?: 'Query' }
   & { titles?: Maybe<Array<(
     { __typename?: 'Title' }
-    & Pick<Title, 'titleType' | 'name' | 'originalName' | 'isAdult' | 'startYear' | 'endYear' | 'runtimeMinutes' | 'genres'>
+    & Pick<Title, 'id' | 'titleType' | 'name' | 'originalName' | 'isAdult' | 'startYear' | 'endYear' | 'runtimeMinutes' | 'genres'>
     & { people?: Maybe<Array<(
       { __typename?: 'Person' }
-      & Pick<Person, 'name' | 'birthYear' | 'deathYear' | 'primaryProfession'>
+      & Pick<Person, 'id' | 'name' | 'birthYear' | 'deathYear' | 'primaryProfession'>
     )>> }
   )>> }
 );
@@ -103,11 +105,13 @@ export type TitlesQuery = (
 export const PeopleDocument = gql`
     query People($skip: Int, $take: Int) {
   people(skip: $skip, take: $take) {
+    id
     name
     birthYear
     deathYear
     primaryProfession
     titles {
+      id
       titleType
       name
       originalName
@@ -150,6 +154,7 @@ export type PeopleQueryResult = Apollo.QueryResult<PeopleQuery, PeopleQueryVaria
 export const TitlesDocument = gql`
     query Titles($skip: Int, $take: Int) {
   titles(skip: $skip, take: $take) {
+    id
     titleType
     name
     originalName
@@ -159,6 +164,7 @@ export const TitlesDocument = gql`
     runtimeMinutes
     genres
     people {
+      id
       name
       birthYear
       deathYear

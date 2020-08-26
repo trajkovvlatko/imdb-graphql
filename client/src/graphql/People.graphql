@@ -1,10 +1,12 @@
 query People($skip: Int, $take: Int) {
   people(skip: $skip, take: $take) {
+    id
     name
     birthYear
     deathYear
     primaryProfession
     titles {
+      id
       titleType
       name
       originalName
