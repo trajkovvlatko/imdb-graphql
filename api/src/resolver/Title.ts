@@ -30,11 +30,20 @@ export default class TitleResolver {
   }
 
   @Query(() => [Title], {nullable: true})
-  findTitles(@Arg('name', () => String) name: string): Promise<Title[]> {
+  findTitles(
+    @Arg('name', () => String) name: string,
+    @Arg('take', () => Int, {nullable: true}) take: number | null,
+    @Arg('skip', () => Int, {nullable: true}) skip: number | null,
+  ): Promise<Title[]> {
+    if (!take || take > 1000 || take < 1) take = 10;
+    if (!skip || skip < 0) skip = 0;
+
     return Title.find({
       where: {
         name: Raw((n) => `${n} ILIKE '%${name}%'`),
       },
+      take,
+      skip,
     });
   }
 }

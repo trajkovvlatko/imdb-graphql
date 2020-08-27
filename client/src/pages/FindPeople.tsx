@@ -2,6 +2,9 @@ import React, {useRef} from 'react';
 import {useApolloClient} from '@apollo/client';
 import {useFindPeopleLazyQuery, Person} from '../generated/graphql';
 import PersonRow from '../components/PersonRow';
+import Pagination from '../components/Pagination';
+
+let name = '';
 
 function FindPeople() {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -10,18 +13,29 @@ function FindPeople() {
     client: useApolloClient(),
   });
 
+  const load = (skip: number) => {
+    loadPerson({
+      variables: {
+        name,
+        skip,
+        take: 10,
+      },
+    });
+  };
+
   const onSearch = () => {
-    if (nameRef && nameRef.current && nameRef.current.value !== '') {
-      const name = nameRef.current.value.trim();
-      if (name !== '') {
-        loadPerson({variables: {name}});
-      }
+    const term = nameRef?.current?.value!.trim();
+    if (term !== '') {
+      name = term;
+      load(0);
     }
   };
 
+  const list = data?.findPeople;
+
   return (
     <>
-      <h3>Person</h3>
+      <h3>Search people by name</h3>
       <input ref={nameRef} type='text' />
       <button onClick={onSearch}>Search</button>
       {loading ? (
@@ -29,10 +43,11 @@ function FindPeople() {
       ) : (
         <div>
           <ul>
-            {data?.findPeople?.map((p: Person) => (
+            {list?.map((p: Person) => (
               <PersonRow person={p} key={`person-${p.id}`} />
             ))}
           </ul>
+          <Pagination list={list} cb={load} />
         </div>
       )}
     </>

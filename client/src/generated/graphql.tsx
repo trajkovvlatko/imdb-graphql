@@ -34,6 +34,8 @@ export type QueryPeopleArgs = {
 
 
 export type QueryFindPeopleArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
 };
 
@@ -50,6 +52,8 @@ export type QueryTitlesArgs = {
 
 
 export type QueryFindTitlesArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
 };
 
@@ -79,6 +83,8 @@ export type Title = {
 
 export type FindPeopleQueryVariables = Exact<{
   name: Scalars['String'];
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -92,6 +98,8 @@ export type FindPeopleQuery = (
 
 export type FindTitlesQueryVariables = Exact<{
   name: Scalars['String'];
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -198,8 +206,8 @@ export const TitleFragmentFragmentDoc = gql`
 }
     `;
 export const FindPeopleDocument = gql`
-    query FindPeople($name: String!) {
-  findPeople(name: $name) {
+    query FindPeople($name: String!, $skip: Int, $take: Int) {
+  findPeople(name: $name, skip: $skip, take: $take) {
     ...PersonFragment
   }
 }
@@ -218,6 +226,8 @@ export const FindPeopleDocument = gql`
  * const { data, loading, error } = useFindPeopleQuery({
  *   variables: {
  *      name: // value for 'name'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
  *   },
  * });
  */
@@ -231,8 +241,8 @@ export type FindPeopleQueryHookResult = ReturnType<typeof useFindPeopleQuery>;
 export type FindPeopleLazyQueryHookResult = ReturnType<typeof useFindPeopleLazyQuery>;
 export type FindPeopleQueryResult = Apollo.QueryResult<FindPeopleQuery, FindPeopleQueryVariables>;
 export const FindTitlesDocument = gql`
-    query FindTitles($name: String!) {
-  findTitles(name: $name) {
+    query FindTitles($name: String!, $skip: Int, $take: Int) {
+  findTitles(name: $name, skip: $skip, take: $take) {
     ...TitleFragment
   }
 }
@@ -251,6 +261,8 @@ export const FindTitlesDocument = gql`
  * const { data, loading, error } = useFindTitlesQuery({
  *   variables: {
  *      name: // value for 'name'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
  *   },
  * });
  */

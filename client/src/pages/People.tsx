@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useApolloClient} from '@apollo/client';
 import {usePeopleQuery, Person} from '../generated/graphql';
 import PersonRow from '../components/PersonRow';
+import Pagination from '../components/Pagination';
 
 function People() {
   const [skip, setSkip] = useState(0);
@@ -18,6 +19,8 @@ function People() {
     return <div>Error!</div>;
   }
 
+  const list = data?.people;
+
   return (
     <>
       <h3>People</h3>
@@ -26,14 +29,11 @@ function People() {
       ) : (
         <div>
           <ul>
-            {data?.people?.map((p: Person) => (
+            {list?.map((p: Person) => (
               <PersonRow person={p} key={`person-${p.id}`} />
             ))}
           </ul>
-          {skip !== 0 && (
-            <button onClick={() => setSkip(skip - 10)}>Previous</button>
-          )}
-          <button onClick={() => setSkip(skip + 10)}>Next</button>
+          <Pagination list={list} cb={(n: number) => setSkip(n)} />
         </div>
       )}
     </>

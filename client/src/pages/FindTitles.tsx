@@ -2,6 +2,9 @@ import React, {useRef} from 'react';
 import {useApolloClient} from '@apollo/client';
 import {useFindTitlesLazyQuery, Title} from '../generated/graphql';
 import TitleRow from '../components/TitleRow';
+import Pagination from '../components/Pagination';
+
+let name = '';
 
 function FindTitles() {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -10,18 +13,29 @@ function FindTitles() {
     client: useApolloClient(),
   });
 
+  const load = (skip: number) => {
+    loadTitle({
+      variables: {
+        name,
+        skip,
+        take: 10,
+      },
+    });
+  };
+
   const onSearch = () => {
-    if (nameRef && nameRef.current) {
-      const name = nameRef.current.value.trim();
-      if (name !== '') {
-        loadTitle({variables: {name}});
-      }
+    const term = nameRef?.current?.value!.trim();
+    if (term !== '') {
+      name = term;
+      load(0);
     }
   };
 
+  const list = data?.findTitles;
+
   return (
     <>
-      <h3>Movie</h3>
+      <h3>Search movies by name</h3>
       <input ref={nameRef} type='text' />
       <button onClick={onSearch}>Search</button>
       {loading ? (
@@ -29,10 +43,11 @@ function FindTitles() {
       ) : (
         <div>
           <ul>
-            {data?.findTitles?.map((t: Title) => (
+            {list?.map((t: Title) => (
               <TitleRow title={t} key={`title-${t.id}`} />
             ))}
           </ul>
+          <Pagination list={list} cb={load} />
         </div>
       )}
     </>

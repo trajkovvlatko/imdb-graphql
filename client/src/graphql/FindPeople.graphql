@@ -1,5 +1,5 @@
-query FindPeople($name: String!) {
-  findPeople(name: $name) {
+query FindPeople($name: String!, $skip: Int, $take: Int) {
+  findPeople(name: $name, skip: $skip, take: $take) {
     ...PersonFragment
   }
 }

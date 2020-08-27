@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useApolloClient} from '@apollo/client';
 import {useTitlesQuery, Title} from '../generated/graphql';
 import TitleRow from '../components/TitleRow';
+import Pagination from '../components/Pagination';
 
 function Titles() {
   const [skip, setSkip] = useState(0);
@@ -18,22 +19,21 @@ function Titles() {
     return <div>Error!</div>;
   }
 
+  const list = data?.titles;
+
   return (
     <>
-      <h3>Titles</h3>
+      <h3>Movies</h3>
       {loading ? (
         <div>Loading</div>
       ) : (
         <div>
           <ul>
-            {data?.titles?.map((t: Title) => (
+            {list?.map((t: Title) => (
               <TitleRow title={t} key={`title-${t.id}`} />
             ))}
           </ul>
-          {skip !== 0 && (
-            <button onClick={() => setSkip(skip - 10)}>Previous</button>
-          )}
-          <button onClick={() => setSkip(skip + 10)}>Next</button>
+          <Pagination list={list} cb={(n: number) => setSkip(n)} />
         </div>
       )}
     </>

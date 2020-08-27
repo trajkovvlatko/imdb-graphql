@@ -1,5 +1,5 @@
-query FindTitles($name: String!) {
-  findTitles(name: $name) {
+query FindTitles($name: String!, $skip: Int, $take: Int) {
+  findTitles(name: $name, skip: $skip, take: $take) {
     ...TitleFragment
   }
 }
