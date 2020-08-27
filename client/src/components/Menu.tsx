@@ -8,13 +8,13 @@ function Menu() {
         <Link to='/titles'>List all movies</Link>
       </li>
       <li>
-        <Link to='/find-title'>Find a movie</Link>
+        <Link to='/find-titles'>Find movies</Link>
       </li>
       <li>
         <Link to='/people'>List all people</Link>
       </li>
       <li>
-        <Link to='/find-person'>Find a person</Link>
+        <Link to='/find-people'>Find people</Link>
       </li>
     </ul>
   );

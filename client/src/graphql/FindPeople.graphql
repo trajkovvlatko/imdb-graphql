@@ -1,0 +1,5 @@
+query FindPeople($name: String!) {
+  findPeople(name: $name) {
+    ...PersonFragment
+  }
+}

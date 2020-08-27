@@ -1,5 +1,6 @@
 import {Resolver, Query, Arg, Int} from 'type-graphql';
 import Person from '../entity/Person';
+import {Raw} from 'typeorm';
 
 @Resolver(Person)
 export default class PersonResolver {
@@ -24,6 +25,15 @@ export default class PersonResolver {
       skip,
       order: {
         id: 'ASC',
+      },
+    });
+  }
+
+  @Query(() => [Person], {nullable: true})
+  findPeople(@Arg('name', () => String) name: string): Promise<Person[]> {
+    return Person.find({
+      where: {
+        name: Raw((n) => `${n} ILIKE '%${name}%'`),
       },
     });
   }

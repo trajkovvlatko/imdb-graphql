@@ -15,8 +15,10 @@ export type Query = {
   __typename?: 'Query';
   person?: Maybe<Person>;
   people?: Maybe<Array<Person>>;
+  findPeople?: Maybe<Array<Person>>;
   title?: Maybe<Title>;
   titles?: Maybe<Array<Title>>;
+  findTitles?: Maybe<Array<Title>>;
 };
 
 
@@ -31,6 +33,11 @@ export type QueryPeopleArgs = {
 };
 
 
+export type QueryFindPeopleArgs = {
+  name: Scalars['String'];
+};
+
+
 export type QueryTitleArgs = {
   id: Scalars['Int'];
 };
@@ -39,6 +46,11 @@ export type QueryTitleArgs = {
 export type QueryTitlesArgs = {
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryFindTitlesArgs = {
+  name: Scalars['String'];
 };
 
 export type Person = {
@@ -64,6 +76,32 @@ export type Title = {
   genres: Scalars['String'];
   people?: Maybe<Array<Person>>;
 };
+
+export type FindPeopleQueryVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type FindPeopleQuery = (
+  { __typename?: 'Query' }
+  & { findPeople?: Maybe<Array<(
+    { __typename?: 'Person' }
+    & PersonFragmentFragment
+  )>> }
+);
+
+export type FindTitlesQueryVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type FindTitlesQuery = (
+  { __typename?: 'Query' }
+  & { findTitles?: Maybe<Array<(
+    { __typename?: 'Title' }
+    & TitleFragmentFragment
+  )>> }
+);
 
 export type PeopleQueryVariables = Exact<{
   skip?: Maybe<Scalars['Int']>;
@@ -159,6 +197,72 @@ export const TitleFragmentFragmentDoc = gql`
   genres
 }
     `;
+export const FindPeopleDocument = gql`
+    query FindPeople($name: String!) {
+  findPeople(name: $name) {
+    ...PersonFragment
+  }
+}
+    ${PersonFragmentFragmentDoc}`;
+
+/**
+ * __useFindPeopleQuery__
+ *
+ * To run a query within a React component, call `useFindPeopleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindPeopleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindPeopleQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useFindPeopleQuery(baseOptions?: Apollo.QueryHookOptions<FindPeopleQuery, FindPeopleQueryVariables>) {
+        return Apollo.useQuery<FindPeopleQuery, FindPeopleQueryVariables>(FindPeopleDocument, baseOptions);
+      }
+export function useFindPeopleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPeopleQuery, FindPeopleQueryVariables>) {
+          return Apollo.useLazyQuery<FindPeopleQuery, FindPeopleQueryVariables>(FindPeopleDocument, baseOptions);
+        }
+export type FindPeopleQueryHookResult = ReturnType<typeof useFindPeopleQuery>;
+export type FindPeopleLazyQueryHookResult = ReturnType<typeof useFindPeopleLazyQuery>;
+export type FindPeopleQueryResult = Apollo.QueryResult<FindPeopleQuery, FindPeopleQueryVariables>;
+export const FindTitlesDocument = gql`
+    query FindTitles($name: String!) {
+  findTitles(name: $name) {
+    ...TitleFragment
+  }
+}
+    ${TitleFragmentFragmentDoc}`;
+
+/**
+ * __useFindTitlesQuery__
+ *
+ * To run a query within a React component, call `useFindTitlesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindTitlesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindTitlesQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useFindTitlesQuery(baseOptions?: Apollo.QueryHookOptions<FindTitlesQuery, FindTitlesQueryVariables>) {
+        return Apollo.useQuery<FindTitlesQuery, FindTitlesQueryVariables>(FindTitlesDocument, baseOptions);
+      }
+export function useFindTitlesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindTitlesQuery, FindTitlesQueryVariables>) {
+          return Apollo.useLazyQuery<FindTitlesQuery, FindTitlesQueryVariables>(FindTitlesDocument, baseOptions);
+        }
+export type FindTitlesQueryHookResult = ReturnType<typeof useFindTitlesQuery>;
+export type FindTitlesLazyQueryHookResult = ReturnType<typeof useFindTitlesLazyQuery>;
+export type FindTitlesQueryResult = Apollo.QueryResult<FindTitlesQuery, FindTitlesQueryVariables>;
 export const PeopleDocument = gql`
     query People($skip: Int, $take: Int) {
   people(skip: $skip, take: $take) {

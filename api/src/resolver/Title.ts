@@ -1,5 +1,6 @@
 import {Resolver, Query, Arg, Int} from 'type-graphql';
 import Title from '../entity/Title';
+import {Raw} from 'typeorm';
 
 @Resolver(Title)
 export default class TitleResolver {
@@ -24,6 +25,15 @@ export default class TitleResolver {
       skip,
       order: {
         id: 'ASC',
+      },
+    });
+  }
+
+  @Query(() => [Title], {nullable: true})
+  findTitles(@Arg('name', () => String) name: string): Promise<Title[]> {
+    return Title.find({
+      where: {
+        name: Raw((n) => `${n} ILIKE '%${name}%'`),
       },
     });
   }
